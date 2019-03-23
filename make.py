@@ -9,7 +9,7 @@ proj_path = ezored_path
 ezored_path = os.path.join(ezored_path, 'ezored')
 
 if not os.path.isdir(ezored_path):
-    print("Cloning ezored-core to '{0}': ".format(ezored_path))
+    print("Cloning ezored-core to '{0}'".format(ezored_path))
 
     subprocess.call([
         'git',
@@ -23,7 +23,7 @@ sys.path.insert(0, ezored_path)
 try:
     from mod import ezored
 except ImportError:
-    error_msg = "\033[91m[ERROR]\033[0m Failed to initialize ezored in '{0}'"
+    error_msg = "[ERROR] Failed to initialize ezored-core in '{0}'"
     print(error_msg.format(proj_path))
     sys.exit(10)
 
