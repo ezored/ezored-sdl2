@@ -1,4 +1,4 @@
-# ezored
+# ezored sdl2
 
 ![](extras/images/doc-logo.png)
 
