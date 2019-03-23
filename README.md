@@ -24,13 +24,13 @@ Check [ezored](https://github.com/ezored/ezored) project for requirements.
 
 ## How to use:
 
-1. Clone reposity:
+1. Clone reposity:  
     > git clone git@github.com:ezored/ezored-sdl2.git
 
-2. Enter on cloned folder:
+2. Enter on cloned folder:  
     > cd ezored
 
-3. The other commands is the same of any **ezored** project:
+3. The other commands is the same of any **ezored** project:  
     https://github.com/ezored/ezored    
 
 ## Supported By Jetbrains IntelliJ IDEA
