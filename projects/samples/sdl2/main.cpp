@@ -211,7 +211,7 @@ void processEvents(Context *ctx)
             if (ctx->mouseState & SDL_BUTTON_LMASK)
             {
                 ctx->canDrawLine = true;
-                ctx->rectLine = SDL_Rect{.x = ctx->mouseX - ctx->mouseDX, .y = ctx->mouseY - ctx->mouseDY, .w = ctx->mouseDX, .h = ctx->mouseDY};
+                ctx->rectLine = SDL_Rect{ctx->mouseX - ctx->mouseDX, ctx->mouseY - ctx->mouseDY, ctx->mouseDX, ctx->mouseDY};
 
                 // load music
                 /*
@@ -255,7 +255,7 @@ void loop(void *arg)
     }
 
     // text
-    SDL_Rect textRect = {.x = (ctx->width / 2), .y = (ctx->height / 2), .w = 0, .h = 0};
+    SDL_Rect textRect = {(ctx->width / 2), (ctx->height / 2), 0, 0};
     SDL_QueryTexture(ctx->textTexture, nullptr, nullptr, &textRect.w, &textRect.h);
 
     textRect.x = textRect.x - (textRect.w / 2);
