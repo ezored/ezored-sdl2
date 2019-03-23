@@ -20,7 +20,7 @@ Obs: Generally any platform with C++ support will work too, like smart tvs and e
 
 ## Requirements:
 
-Check [ezored] for requirements(https://github.com/ezored/ezored)
+Check [ezored](https://github.com/ezored/ezored) project for requirements.
 
 ## How to use:
 
@@ -30,7 +30,7 @@ Check [ezored] for requirements(https://github.com/ezored/ezored)
 2. Enter on cloned folder:
     > cd ezored
 
-3. The other commands is the same of any **ezored** proejct.
+3. The other commands is the same of any **ezored** project:
     https://github.com/ezored/ezored    
 
 ## Supported By Jetbrains IntelliJ IDEA
