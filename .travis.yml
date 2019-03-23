@@ -8,7 +8,7 @@ addons:
       - gcc-multilib
       - g++-multilib
 install:
-  - sudo apt-get install -y libjack-jackd2-dev
+  - sudo apt-get install -y jackd
   - pip install conan
 before_script:
   - conan profile new default --detect
