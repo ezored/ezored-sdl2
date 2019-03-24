@@ -13,6 +13,7 @@ class TargetConan(ConanFile):
         'shared': False,
         'fPIC': True,
         'sdl2:jack': False,
+        'sdl2:pulse': False,
         'sdl2_image:bmp': False,
         'sdl2_image:gif': False,
         'sdl2_image:lbm': False,
