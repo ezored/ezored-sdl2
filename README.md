@@ -30,7 +30,7 @@ Obs: Generally any platform with C++ support will work too, like smart tvs and e
     > git clone git@github.com:ezored/ezored-sdl2.git
 
 2. Enter on cloned folder:  
-    > cd ezored
+    > cd ezored-sdl2
 
 3. The other commands is the same of any **ezored** project:  
     https://github.com/ezored/ezored    
