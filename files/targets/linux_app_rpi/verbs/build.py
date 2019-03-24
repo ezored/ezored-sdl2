@@ -89,7 +89,7 @@ def run(params):
                     build_dir,
                     'bin'
                 )
-                
+
                 assets_dir = os.path.join(
                     proj_path,
                     const.DIR_NAME_PROJECTS,
