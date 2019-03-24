@@ -26,7 +26,6 @@ class TargetConan(ConanFile):
         'sdl2_image:tif': False,
         'sdl2_image:png': True,
         'sdl2_image:webp': False,
-        'sdl2_image:imageio': False,
     }
     exports_sources = '*'
     generators = 'cmake'
