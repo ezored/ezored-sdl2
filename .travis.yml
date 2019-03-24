@@ -9,7 +9,7 @@ addons:
       - g++-multilib
 install:
   - sudo apt-get update -qq
-  - sudo apt-get install -y --no-install-suggests --no-install-recommends jackd
+  - sudo apt-get install -y --no-install-suggests --no-install-recommends libglib2.0-dev jackd
   - pip install conan
 before_script:
   - conan profile new default --detect
