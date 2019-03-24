@@ -51,19 +51,6 @@ def run(params):
 
                 # copy files
                 file.copy_all_inside(build_dir, dist_dir)
-
-                # copy assets
-                assets_dir = os.path.join(
-                    proj_path,
-                    const.DIR_NAME_PROJECTS,
-                    'samples',
-                    'sdl2',
-                    'assets',
-                )
-
-                file.copy_all_inside(assets_dir, os.path.join(
-                    dist_dir, 'assets'
-                ))
     else:
         log.error('Arch list for "{0}" is invalid or empty'.format(
             target_name

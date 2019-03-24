@@ -83,6 +83,37 @@ def run(params):
                     run_args,
                     build_dir
                 )
+
+                # copy dependencies
+                deps_bin_dir = os.path.join(
+                    proj_path,
+                    const.DIR_NAME_BUILD,
+                    target_name,
+                    build_type,
+                    arch['conan_arch'],
+                    const.DIR_NAME_BUILD_CONAN,
+                    'bin'
+                )
+
+                build_bin_dir = os.path.join(
+                    build_dir,
+                    'bin'
+                )
+
+                file.copy_all_inside(deps_bin_dir, build_bin_dir)
+
+                # copy assets
+                assets_dir = os.path.join(
+                    proj_path,
+                    const.DIR_NAME_PROJECTS,
+                    'samples',
+                    'sdl2',
+                    'assets',
+                )
+
+                file.copy_all_inside(assets_dir, os.path.join(
+                    build_bin_dir, 'assets'
+                ))
     else:
         log.error('Arch list for "{0}" is invalid or empty'.format(
             target_name

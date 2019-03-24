@@ -37,6 +37,9 @@ class TargetConan(ConanFile):
         cmake.configure()
         cmake.build()
 
+    def imports(self):
+        self.copy("*.dll", dst="bin", keep_path=False)
+
     def requirements(self):
         self.requires('sdl2/2.0.9@bincrafters/stable')
         self.requires('sdl2_image/2.0.4@bincrafters/stable')
