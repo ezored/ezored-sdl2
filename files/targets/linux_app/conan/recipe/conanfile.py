@@ -12,7 +12,21 @@ class TargetConan(ConanFile):
     default_options = {
         'shared': False,
         'fPIC': True,
+        'sdl2_image:bmp': False,
+        'sdl2_image:gif': False,
+        'sdl2_image:lbm': False,
+        'sdl2_image:pcx': False,
+        'sdl2_image:pnm': False,
+        'sdl2_image:svg': False,
+        'sdl2_image:tga': False,
+        'sdl2_image:xcf': False,
+        'sdl2_image:xpm': False,
+        'sdl2_image:xv': False,
         'sdl2_image:jpg': 'libjpeg',
+        'sdl2_image:tif': False,
+        'sdl2_image:png': True,
+        'sdl2_image:webp': False,
+        'sdl2_image:imageio': False,
     }
     exports_sources = '*'
     generators = 'cmake'
