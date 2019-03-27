@@ -1,4 +1,5 @@
 #include <cmath>
+#include <cstdio>
 #include <iostream>
 #include <map>
 #include <string>
@@ -8,30 +9,37 @@
 #include <emscripten/emscripten.h>
 #endif
 
-#include <SDL2/SDL.h>
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
+#include "SDL2/SDL_ttf.h"
+//#include "SDL2/SDL_mixer.h"
 
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-//#include <SDL2/SDL_mixer.h>
+#include "engine/FPSCounter.hpp"
+#include "engine/Timer.hpp"
 
 struct Context
 {
     SDL_Window *window;
     SDL_Renderer *renderer;
 
+    engine::Timer timer;
+    engine::FPSCounter fpsCounter;
+
     int iteration;
     int width;
     int height;
 
-    int offsetX;
-    int offsetY;
+    int speedX = 400;
+    int speedY = 400;
+
+    int offsetX = 0;
+    int offsetY = 0;
 
     // all loaded textures
     std::map<std::string, SDL_Texture *> textures;
 
     // font and text data
     TTF_Font *font;
-    SDL_Texture *textTexture;
 
     // mouse data
     int mouseX, mouseY, mouseDX, mouseDY;
@@ -47,9 +55,6 @@ struct Context
 
     // music
     //Mix_Music *music;
-
-    // gui
-    bool guiShowSampleWindow = true;
 
     // sdl
     bool done = false;
@@ -122,11 +127,21 @@ Mix_Music *loadMusic(const char *filename)
 }
 */
 
-void writeText(Context *ctx, const char *text)
+void writeText(Context *ctx, const char *text, const int posX, const int posY)
 {
     SDL_Color fg = {0, 0, 0, 255};
     SDL_Surface *textSurface = TTF_RenderText_Blended(ctx->font, text, fg);
-    ctx->textTexture = SDL_CreateTextureFromSurface(ctx->renderer, textSurface);
+    SDL_Texture *textTexture = SDL_CreateTextureFromSurface(ctx->renderer, textSurface);
+
+    SDL_Rect textRect = {posX, posY, 0, 0};
+    SDL_QueryTexture(textTexture, nullptr, nullptr, &textRect.w, &textRect.h);
+
+    textRect.x = textRect.x - (textRect.w / 2);
+    textRect.y = textRect.y - (textRect.h / 2);
+
+    SDL_RenderCopy(ctx->renderer, textTexture, nullptr, &textRect);
+
+    SDL_DestroyTexture(textTexture);
     SDL_FreeSurface(textSurface);
 }
 
@@ -176,6 +191,7 @@ void processEvents(Context *ctx)
         {
             ctx->done = 1;
         }
+
         switch (event.key.keysym.sym)
         {
         case SDLK_ESCAPE:
@@ -183,19 +199,27 @@ void processEvents(Context *ctx)
             break;
         case SDLK_UP:
             if (event.key.type == SDL_KEYDOWN)
-                ctx->offsetY = ctx->offsetY - 1;
+            {
+                ctx->speedY = ctx->speedY - 1;
+            }
             break;
         case SDLK_DOWN:
             if (event.key.type == SDL_KEYDOWN)
-                ctx->offsetY = ctx->offsetY + 1;
+            {
+                ctx->speedY = ctx->speedY + 1;
+            }
             break;
         case SDLK_LEFT:
             if (event.key.type == SDL_KEYDOWN)
-                ctx->offsetX = ctx->offsetX - 1;
+            {
+                ctx->speedX = ctx->speedX - 1;
+            }
             break;
         case SDLK_RIGHT:
             if (event.key.type == SDL_KEYDOWN)
-                ctx->offsetX = ctx->offsetX + 1;
+            {
+                ctx->speedX = ctx->speedX + 1;
+            }
             break;
         default:
             break;
@@ -232,6 +256,8 @@ void loop(void *arg)
 {
     Context *ctx = static_cast<Context *>(arg);
 
+    ctx->timer.reset();
+
     // events
     processEvents(ctx);
 
@@ -240,11 +266,31 @@ void loop(void *arg)
     SDL_RenderClear(ctx->renderer);
 
     // moving rectangle
+    int rectSize = 50;
+    float delta = ctx->timer.getDelta();
+    ctx->fpsCounter.count(delta);
+
+    int speedX = ctx->speedX * delta;
+    int speedY = ctx->speedY * delta;
+
+    ctx->offsetX += speedX;
+    ctx->offsetY += speedY;
+
+    if ((ctx->offsetX < 0) || (ctx->offsetX + rectSize > ctx->width))
+    {
+        ctx->speedX = ctx->speedX * -1;
+    }
+
+    if ((ctx->offsetY < 0) || (ctx->offsetY + rectSize > ctx->height))
+    {
+        ctx->speedY = ctx->speedY * -1;
+    }
+
     SDL_Rect imageRect;
-    imageRect.x = (ctx->iteration % ctx->width);
-    imageRect.y = (ctx->iteration % ctx->height);
-    imageRect.w = 50 + ctx->offsetX;
-    imageRect.h = 50 + ctx->offsetY;
+    imageRect.x = ctx->offsetX;
+    imageRect.y = ctx->offsetY;
+    imageRect.w = rectSize;
+    imageRect.h = rectSize;
 
     showImage(ctx, "assets/images/logo.png", &imageRect);
 
@@ -255,18 +301,18 @@ void loop(void *arg)
     }
 
     // text
-    SDL_Rect textRect = {(ctx->width / 2), (ctx->height / 2), 0, 0};
-    SDL_QueryTexture(ctx->textTexture, nullptr, nullptr, &textRect.w, &textRect.h);
+    writeText(ctx, "EZORED", (ctx->width / 2), (ctx->height / 2) - 30);
 
-    textRect.x = textRect.x - (textRect.w / 2);
-    textRect.y = textRect.y - (textRect.h / 2);
-
-    SDL_RenderCopy(ctx->renderer, ctx->textTexture, nullptr, &textRect);
+    std::string fpsText = "FPS: " + std::to_string(static_cast<int>(ctx->fpsCounter.getFPS()));
+    writeText(ctx, fpsText.c_str(), (ctx->width / 2), (ctx->height / 2) + 30);
 
     // present
     SDL_RenderPresent(ctx->renderer);
 
     ctx->iteration++;
+    ctx->timer.tick();
+
+    SDL_Delay(1);
 
 #ifdef __EMSCRIPTEN__
     if (done)
@@ -288,8 +334,8 @@ int main(int argc, char *argv[])
 
     // setup sdl
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-    SDL_Window *window = SDL_CreateWindow(nullptr, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, canvasWidth, canvasHeight, (SDL_WINDOW_SHOWN));
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_Window *window = SDL_CreateWindow("Ezored", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, canvasWidth, canvasHeight, (SDL_WINDOW_SHOWN));
+    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, (SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
 
     // create context
     Context ctx;
@@ -303,7 +349,7 @@ int main(int argc, char *argv[])
     // load font
     TTF_Init();
     ctx.font = TTF_OpenFont("assets/fonts/edosz.ttf", 30);
-    writeText(&ctx, "ezored");
+    writeText(&ctx, "ezored", (ctx.width / 2), (ctx.height / 2));
 
     // load brush
     loadBrush(&ctx);

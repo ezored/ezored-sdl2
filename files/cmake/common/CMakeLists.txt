@@ -6,17 +6,23 @@ set(PROJECT_HEADER_SEARCH_PATHS
 # Library search paths
 set(PROJECT_LIBRARY_SEARCH_PATHS "" CACHE INTERNAL "")
 
+# Header files
+file(GLOB H_FILES_ENGINE "${PROJECT_ROOT_PATH}/projects/samples/sdl2/engine/*.hpp")
+
 # Source files
+file(GLOB S_FILES_ENGINE "${PROJECT_ROOT_PATH}/projects/samples/sdl2/engine/*.cpp")
 file(GLOB S_FILES_PROJECT "${PROJECT_ROOT_PATH}/projects/samples/sdl2/*.cpp")
 
 # Merge lists
 set(
     PROJECT_HEADER_FILES
+    ${H_FILES_ENGINE}
     CACHE INTERNAL ""
 )
 
 set(
     PROJECT_SOURCE_FILES
+    ${S_FILES_ENGINE}
     ${S_FILES_PROJECT}
     CACHE INTERNAL ""
 )
