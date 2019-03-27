@@ -200,25 +200,25 @@ void processEvents(Context *ctx)
         case SDLK_UP:
             if (event.key.type == SDL_KEYDOWN)
             {
-                ctx->speedY = ctx->speedY - 1;
+                ctx->speedY = ctx->speedY - 10;
             }
             break;
         case SDLK_DOWN:
             if (event.key.type == SDL_KEYDOWN)
             {
-                ctx->speedY = ctx->speedY + 1;
+                ctx->speedY = ctx->speedY + 10;
             }
             break;
         case SDLK_LEFT:
             if (event.key.type == SDL_KEYDOWN)
             {
-                ctx->speedX = ctx->speedX - 1;
+                ctx->speedX = ctx->speedX - 10;
             }
             break;
         case SDLK_RIGHT:
             if (event.key.type == SDL_KEYDOWN)
             {
-                ctx->speedX = ctx->speedX + 1;
+                ctx->speedX = ctx->speedX + 10;
             }
             break;
         default:
@@ -279,11 +279,13 @@ void loop(void *arg)
     if ((ctx->offsetX < 0) || (ctx->offsetX + rectSize > ctx->width))
     {
         ctx->speedX = ctx->speedX * -1;
+        ctx->offsetX = ctx->offsetX - speedX;
     }
 
     if ((ctx->offsetY < 0) || (ctx->offsetY + rectSize > ctx->height))
     {
         ctx->speedY = ctx->speedY * -1;
+        ctx->offsetY = ctx->offsetY - speedY;
     }
 
     SDL_Rect imageRect;
@@ -311,8 +313,6 @@ void loop(void *arg)
 
     ctx->iteration++;
     ctx->timer.tick();
-
-    SDL_Delay(1);
 
 #ifdef __EMSCRIPTEN__
     if (done)
