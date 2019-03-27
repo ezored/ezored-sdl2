@@ -9,9 +9,6 @@ private:
     unsigned int lastTime;
     float delta;
 
-    int currentFPS;
-    int averageFPS;
-
 public:
     Timer();
 
