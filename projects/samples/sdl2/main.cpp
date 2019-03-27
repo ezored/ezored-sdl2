@@ -337,6 +337,14 @@ int main(int argc, char *argv[])
     SDL_Window *window = SDL_CreateWindow("Ezored", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, canvasWidth, canvasHeight, (SDL_WINDOW_SHOWN));
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, (SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
 
+// mouse
+#ifdef __RASPBERRY__
+    SDL_ShowCursor(SDL_DISABLE);
+    std::cout << "Cursor disabled" << std::endl;
+#else
+    std::cout << "Cursor enabled" << std::endl;
+#endif
+
     // create context
     Context ctx;
     ctx.window = window;
