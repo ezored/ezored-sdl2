@@ -35,6 +35,22 @@ Obs: Generally any platform with C++ support will work too, like smart tvs and e
 3. The other commands is the same of any **ezored** project:  
     https://github.com/ezored/ezored    
 
+## Dist folder prebuilt
+
+The folder containing all prebuilt things (windows, macos, linux and others) are not versioned, but you can download a full version with the following command:
+
+> python make.py dist download
+
+This command will download the following file:
+
+> http://public.ezored.com/ezored/prebuilt/dist-sdl2.zip
+
+And will unpack for you creating a folder called **"dist"** with all prebuilt files in the project root folder.
+
+You can also pack **"dist"** folder again using:
+
+> python make.py dist pack
+
 ## Supported By Jetbrains IntelliJ IDEA
 
 ![Supported By Jetbrains IntelliJ IDEA](extras/images/jetbrains-logo.png "Supported By Jetbrains IntelliJ IDEA")
