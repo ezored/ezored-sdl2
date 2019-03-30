@@ -15,6 +15,7 @@ class TargetConan(ConanFile):
         'sdl2:jack': False,
         'sdl2:pulse': False,
         'sdl2:x11': False,
+        'sdl2:video_rpi': True,
         'sdl2_image:bmp': False,
         'sdl2_image:gif': False,
         'sdl2_image:lbm': False,
