@@ -24,6 +24,11 @@ Obs: Generally any platform with C++ support will work too, like smart tvs and e
 2. Add bincrafters conan server:  
     > conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
 
+##### Raspberry Pi:
+1. sudo apt-get install libudev-dev  
+2. sudo apt-get install libusb-dev  
+3. sudo apt-get install libusb-1.0-0-dev  
+
 ## How to use:
 
 1. Clone reposity:  
