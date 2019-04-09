@@ -1,3 +1,6 @@
+// uncomment to enable audio (sdl2-mixer)
+// #define EZORED_HAS_AUDIO 1
+
 #include <cmath>
 #include <cstdio>
 #include <iostream>
@@ -12,7 +15,10 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
-//#include "SDL2/SDL_mixer.h"
+
+#ifdef EZORED_HAS_AUDIO
+#include "SDL2/SDL_mixer.h"
+#endif
 
 #include "engine/FPSCounter.hpp"
 #include "engine/Timer.hpp"
@@ -53,8 +59,10 @@ struct Context
     // number of pixels between brush blots when forming a line
     int pixelsPerIteration = 5;
 
-    // music
-    //Mix_Music *music;
+// music
+#ifdef EZORED_HAS_AUDIO
+    Mix_Music *music;
+#endif
 
     // sdl
     bool done = false;
@@ -93,7 +101,7 @@ void loadBrush(Context *ctx)
     loadImage(ctx, filename);
 }
 
-/*
+#ifdef EZORED_HAS_AUDIO
 Mix_Chunk *loadChunk(const char *filename)
 {
     Mix_Chunk *chunk = Mix_LoadWAV(filename);
@@ -108,9 +116,7 @@ Mix_Chunk *loadChunk(const char *filename)
 
     return chunk;
 }
-*/
 
-/*
 Mix_Music *loadMusic(const char *filename)
 {
     Mix_Music *music = Mix_LoadMUS(filename);
@@ -125,7 +131,7 @@ Mix_Music *loadMusic(const char *filename)
 
     return music;
 }
-*/
+#endif
 
 void writeText(Context *ctx, const char *text, const int posX, const int posY)
 {
@@ -237,15 +243,15 @@ void processEvents(Context *ctx)
                 ctx->canDrawLine = true;
                 ctx->rectLine = SDL_Rect{ctx->mouseX - ctx->mouseDX, ctx->mouseY - ctx->mouseDY, ctx->mouseDX, ctx->mouseDY};
 
-                // load music
-                /*
+// load music
+#ifdef EZORED_HAS_AUDIO
                 if (ctx->music == nullptr)
                 {
                     Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
                     ctx->music = loadMusic("assets/sounds/bg.ogg");
                     Mix_PlayMusic(ctx->music, -1);
                 }
-                */
+#endif
             }
             break;
         }
@@ -381,8 +387,10 @@ int main(int argc, char *argv[])
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
-    //Mix_FreeMusic(ctx.music);
-    //Mix_CloseAudio();
+#ifdef EZORED_HAS_AUDIO
+    Mix_FreeMusic(ctx.music);
+    Mix_CloseAudio();
+#endif
 
     SDL_Quit();
 
