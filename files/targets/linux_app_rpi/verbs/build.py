@@ -100,7 +100,7 @@ def run(params):
                     proj_path,
                     const.DIR_NAME_PROJECTS,
                     'samples',
-                    'sdl2',
+                    'basic',
                     'assets',
                 )
 
