@@ -39,7 +39,7 @@ def download(params):
     log.info('Downloading {0} file...'.format(const.FILE_NAME_DIST_PACKED))
     dst_file = os.path.join(proj_path, const.FILE_NAME_DIST_PACKED)
 
-    url = 'http://public.ezored.com/ezored/prebuilt/dist-sdl2.zip'
+    url = 'http://public.ezored.com/ezored-sdl2/prebuilt/dist.zip'
     net.download(url, dst_file)
 
     log.info('Removing old folder...')
