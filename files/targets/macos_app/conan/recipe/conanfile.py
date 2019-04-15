@@ -26,7 +26,6 @@ class TargetConan(ConanFile):
         'sdl2_image:tif': False,
         'sdl2_image:png': True,
         'sdl2_image:webp': False,
-        'darwin-toolchain:enable_arc': False,
     }
     exports_sources = '*'
     generators = 'cmake'
