@@ -6,7 +6,7 @@ import ezored.app.const as const
 from ezored.modules import file
 from ezored.modules import log
 from ezored.modules import runner
-from files.config import target_macos_app as config
+from files.config import target_linux_rpi_app as config
 
 
 # -----------------------------------------------------------------------------
