@@ -96,22 +96,23 @@ def run(params):
                 )
 
                 # copy assets
-                assets_dir = os.path.join(
-                    proj_path,
-                    const.DIR_NAME_PROJECTS,
-                    'samples',
-                    'basic',
-                    'assets',
-                )
+                if 'assets_dir' in target_config:
+                    assets_dir = target_config['assets_dir']
 
-                build_assets_dir = os.path.join(
-                    build_dir,
-                    'bin',
-                    'assets',
-                )
+                    assets_dir = os.path.join(
+                        proj_path,
+                        assets_dir,
+                    )
 
-                file.remove_dir(build_assets_dir)
-                file.copy_all_inside(assets_dir, build_assets_dir)
+                    if os.path.isdir(assets_dir):
+                        build_assets_dir = os.path.join(
+                            build_dir,
+                            'bin',
+                            os.path.basename(assets_dir)
+                        )
+
+                        file.remove_dir(build_assets_dir)
+                        file.copy_dir(assets_dir, build_assets_dir)
     else:
         log.error('Arch list for "{0}" is invalid or empty'.format(
             target_name
