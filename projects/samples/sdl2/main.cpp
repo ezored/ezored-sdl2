@@ -1,5 +1,5 @@
 // uncomment to enable audio (sdl2-mixer)
-// #define EZORED_HAS_AUDIO 1
+// #define EZORED_APP_HAS_AUDIO 1
 
 #include <cmath>
 #include <cstdio>
@@ -16,7 +16,7 @@
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
 
-#ifdef EZORED_HAS_AUDIO
+#ifdef EZORED_APP_HAS_AUDIO
 #include "SDL2/SDL_mixer.h"
 #endif
 
@@ -60,7 +60,7 @@ struct Context
     int pixelsPerIteration = 5;
 
 // music
-#ifdef EZORED_HAS_AUDIO
+#ifdef EZORED_APP_HAS_AUDIO
     Mix_Music *music;
 #endif
 
@@ -101,7 +101,7 @@ void loadBrush(Context *ctx)
     loadImage(ctx, filename);
 }
 
-#ifdef EZORED_HAS_AUDIO
+#ifdef EZORED_APP_HAS_AUDIO
 Mix_Chunk *loadChunk(const char *filename)
 {
     Mix_Chunk *chunk = Mix_LoadWAV(filename);
@@ -244,7 +244,7 @@ void processEvents(Context *ctx)
                 ctx->rectLine = SDL_Rect{ctx->mouseX - ctx->mouseDX, ctx->mouseY - ctx->mouseDY, ctx->mouseDX, ctx->mouseDY};
 
 // load music
-#ifdef EZORED_HAS_AUDIO
+#ifdef EZORED_APP_HAS_AUDIO
                 if (ctx->music == nullptr)
                 {
                     Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
@@ -387,7 +387,7 @@ int main(int argc, char *argv[])
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
-#ifdef EZORED_HAS_AUDIO
+#ifdef EZORED_APP_HAS_AUDIO
     Mix_FreeMusic(ctx.music);
     Mix_CloseAudio();
 #endif
