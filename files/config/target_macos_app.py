@@ -32,6 +32,6 @@ def run(proj_path, target_name, params):
     return {
         'project_name': 'Sample',
         'build_types': ['Debug', 'Release'],
-        'archs': arch,
+        'archs': archs,
         'assets_dir': 'projects/samples/sdl2/assets',
     }
