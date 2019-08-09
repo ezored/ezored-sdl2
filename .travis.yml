@@ -1,10 +1,18 @@
-os: linux
-dist: xenial
-language: python
-python: "3.7"
-services:
-  - docker
-install:
-  - docker pull conanio/gcc8
-script:
-  - docker run -v ${PWD}:/home/conan/project conanio/gcc8 /bin/bash -c "conan profile new default --detect && conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan && python make.py conan install_profiles && cd project && python make.py target linux_app conan && python make.py target linux_app build && python make.py target linux_app package"
+linux: &linux
+   os: linux
+   dist: xenial
+   language: python
+   python: "3.7"
+   services:
+     - docker
+   install:
+     - pip install conan_package_tools
+     - pip install conan
+     - conan user
+   script:
+     - python build.py
+
+matrix:
+   include:
+      - <<: *linux
+        env: CONAN_GCC_VERSIONS=8 CONAN_DOCKER_IMAGE=conanio/gcc8
