@@ -1,3 +1,6 @@
+import os
+
+
 def run(proj_path, target_name, params):
     archs = [
         {
