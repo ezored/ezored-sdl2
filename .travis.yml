@@ -1,28 +1,61 @@
-os: linux
-dist: xenial
-language: python
-python: "3.7"
-addons:
-  apt:
-    packages:
-      - gcc-multilib
-      - g++-multilib
+linux: &linux
+  os: linux
+  dist: xenial
+  language: python
+  python: "3.7"
+  addons:
+    apt:
+      packages:
+        - gcc-multilib
+        - g++-multilib
+  install:
+    - sudo apt-get update
+    - sudo apt-get install -y -f libjack-dev
+    - pip install conan
+  before_script:
+    - conan profile new default --detect
+    - conan profile update settings.compiler.libcxx=libstdc++11 default
+    - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+    - python make.py conan install_profiles
+  script:
+    - python make.py target linux_app conan
+    - python make.py target linux_app build
+    - python make.py target linux_app package
+
+osx: &osx
+   os: osx
+   language: generic
+   install:
+     - brew update || brew update
+     - brew outdated pyenv || brew upgrade pyenv
+     - brew install pyenv-virtualenv
+     - brew install cmake || brew upgrade cmake || true
+     - if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+     - pyenv install 3.7.1
+     - pyenv virtualenv 3.7.1 conan
+     - pyenv rehash
+     - pyenv activate conan
+     - pip install conan
+   before_script:
+     - conan profile new default --detect
+     - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+     - conan remote add ezored https://api.bintray.com/conan/ezored/conan-darwin-toolchain
+     - python make.py conan install_profiles
+   script:
+    - python make.py target macos_app conan
+    - python make.py target macos_app build
+    - python make.py target macos_app package
 
 matrix:
-   include:
-      - env: CONAN_ARCHS=x86_64
-      - env: CONAN_ARCHS=x86
+  include:
+     - <<: *linux
+       env: CONAN_ARCHS=x86_64
+     - <<: *linux
+       env: CONAN_ARCHS=x86
+     - <<: *osx
+       osx_image: xcode9.4
+       env: CONAN_APPLE_CLANG_VERSIONS=9.1 CONAN_ARCHS=x86_64
+     - <<: *osx
+       osx_image: xcode10.1
+       env: CONAN_APPLE_CLANG_VERSIONS=10.0 CONAN_ARCHS=x86_64
 
-install:
-  - sudo apt-get update
-  - sudo apt-get install -y -f libjack-dev
-  - pip install conan
-before_script:
-  - conan profile new default --detect
-  - conan profile update settings.compiler.libcxx=libstdc++11 default
-  - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
-  - python make.py conan install_profiles
-script:
-  - python make.py target linux_app conan
-  - python make.py target linux_app build
-  - python make.py target linux_app package
