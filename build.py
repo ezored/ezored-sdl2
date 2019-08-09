@@ -12,4 +12,5 @@ def docker_entry_script():
 
 if __name__ == "__main__":
     builder = ConanMultiPackager(docker_entry_script=docker_entry_script())
+    builder.add()
     builder.run()
