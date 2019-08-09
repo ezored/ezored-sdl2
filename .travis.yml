@@ -12,8 +12,8 @@ linux: &linux
    script:
      - python build.py
    env:
-     - CONAN_USERNAME: ezored
-     - CONAN_REMOTES: https://api.bintray.com/conan/bincrafters/public-conan
+     - CONAN_USERNAME=ezored
+     - CONAN_REMOTES=https://api.bintray.com/conan/bincrafters/public-conan
 
 matrix:
    include:
