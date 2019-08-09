@@ -2,18 +2,22 @@ os: linux
 dist: xenial
 language: python
 python: "3.7"
-services:
-  - docker
-env:
-  CONAN_GCC_VERSIONS=8
-  CONAN_DOCKER_IMAGE=conanio/gcc8
-  CONAN_USERNAME=ezored
-  CONAN_REMOTES=https://api.bintray.com/conan/bincrafters/public-conan
-  CONAN_REFERENCE=ezored/latest@ezored/stable
-
+addons:
+  apt:
+    packages:
+      - gcc-multilib
+      - g++-multilib
+env: CONAN_ARCHS=x86_64
 install:
-  - pip install conan_package_tools
+  - sudo apt-get update
+  - sudo apt-get install -y -f libjack-dev
   - pip install conan
-  - conan user
+before_script:
+  - conan profile new default --detect
+  - conan profile update settings.compiler.libcxx=libstdc++11 default
+  - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
+  - python make.py conan install_profiles
 script:
-  - python build.py
+  - python make.py target linux_app conan
+  - python make.py target linux_app build
+  - python make.py target linux_app package
