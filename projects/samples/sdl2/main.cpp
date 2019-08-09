@@ -1,5 +1,5 @@
 // uncomment to enable audio (sdl2-mixer)
-// #define EZORED_APP_HAS_AUDIO 1
+#define EZORED_APP_HAS_AUDIO 1
 
 #include <cmath>
 #include <cstdio>
