@@ -1,21 +1,24 @@
 import os
 
+
 def run(proj_path, target_name, params):
     archs = [
-            {
-                'arch': 'x86',
-                'conan_arch': 'x86',
-                'conan_profile': 'ezored_linux_app_profile',
-            },
-            {
-                'arch': 'x86_64',
-                'conan_arch': 'x86_64',
-                'conan_profile': 'ezored_linux_app_profile',
-            },
-        ]
-    if os.getenv("CONAN_ARCHS"):
+        {
+            'arch': 'x86',
+            'conan_arch': 'x86',
+            'conan_profile': 'ezored_linux_app_profile',
+        },
+        {
+            'arch': 'x86_64',
+            'conan_arch': 'x86_64',
+            'conan_profile': 'ezored_linux_app_profile',
+        },
+    ]
+
+    if os.getenv('CONAN_ARCHS'):
         archs = []
-        env_archs = os.getenv("CONAN_ARCHS").split(",")
+        env_archs = os.getenv('CONAN_ARCHS').split(',')
+
         for it in env_archs:
             archs.append({
                 'arch': it,
