@@ -35,6 +35,7 @@ osx: &osx
      - pyenv virtualenv 3.7.1 conan
      - pyenv rehash
      - pyenv activate conan
+     - pip install conan
    before_script:
      - conan profile new default --detect
      - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
