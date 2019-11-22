@@ -43,3 +43,4 @@ class TargetConan(ConanFile):
         self.requires("sdl2_image/2.0.5@bincrafters/stable")
         self.requires("sdl2_ttf/2.0.15@bincrafters/stable")
         self.requires("libpng/1.6.37@bincrafters/stable")
+        self.requires("zlib/1.2.11@conan/stable")
